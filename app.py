@@ -7,7 +7,7 @@ import base64
 app = Flask(__name__)
 
 # Configurer le chemin de Tesseract (si nécessaire)
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # Assurez-vous que cela est correct dans votre conteneur
+pytesseract.pytesseract.tesseract_cmd = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"  # Assurez-vous que cela est correct dans votre conteneur
 
 @app.route('/ocr', methods=['POST'])
 def ocr():
