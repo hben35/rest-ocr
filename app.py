@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # Configurer le chemin de Tesseract (si nécessaire)
 # pytesseract.pytesseract.tesseract_cmd = "/mnt/data/tesseract/tessdata"  # Assurez-vous que cela est correct dans votre conteneur
-pytesseract.pytesseract.tesseract_cmd = "/var/lib/docker/volumes/captain--tess-data/_data"
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 @app.route('/ocr', methods=['POST'])
 def ocr():
