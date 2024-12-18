@@ -4,11 +4,22 @@ FROM jitesoft/tesseract-ocr:latest
 # Passer à l'utilisateur root pour installer des paquets
 USER root
 
-# Mettre à jour les paquets et installer Python et Flask
+# Mettre à jour les paquets et installer Python, Flask, et pytesseract
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-dev \
+    wget \
     && rm -rf /var/lib/apt/lists/*
+
+# Créer le répertoire pour les fichiers de langue Tesseract
+RUN mkdir -p /mnt/data/tesseract/tessdata
+
+# Télécharger les fichiers de langue (anglais et français) depuis GitHub
+RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata/raw/master/eng.traineddata
+RUN wget -O /mnt/data/tesseract/tessdata/fra.traineddata https://github.com/tesseract-ocr/tessdata/raw/master/fra.traineddata
+
+# Définir la variable d'environnement TESSDATA_PREFIX
+ENV TESSDATA_PREFIX=/mnt/data/tesseract/tessdata/
 
 # Installer Flask et pytesseract
 RUN pip3 install flask pytesseract
