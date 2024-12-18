@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /mnt/data/tesseract/tessdata
 
 # Télécharger les fichiers de langue (anglais et français) depuis un autre serveur
-RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://tesseract-ocr.github.io/tessdata/eng.traineddata
-RUN wget -O /mnt/data/tesseract/tessdata/fra.traineddata https://tesseract-ocr.github.io/tessdata/fra.traineddata
+RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/eng.traineddata
+RUN wget -O /mnt/data/tesseract/tessdata/fra.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/fra.traineddata
 
 # Définir la variable d'environnement TESSDATA_PREFIX
 ENV TESSDATA_PREFIX=/mnt/data/tesseract/tessdata/
