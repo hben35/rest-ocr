@@ -20,8 +20,8 @@ RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://github.com/tess
 # Set environment variable
 ENV TESSDATA_PREFIX=/mnt/data/tesseract/tessdata/
 
-# Install Flask and pytesseract
-RUN pip3 install flask pytesseract
+# Install Flask, pytesseract, and requests
+RUN pip3 install flask pytesseract requests
 
 # Add Flask application to the image
 COPY app.py /app.py
