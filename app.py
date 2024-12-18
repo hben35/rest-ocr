@@ -28,7 +28,8 @@ def ocr():
         img_url = data['img_url']
         image = Image.open(requests.get(img_url, stream=True).raw)
     elif 'img_base64' in data:
-        img_data = base64.b64decode(add_padding(data['img_base64']))
+        base64_str = data['img_base64'].split(",")[1] if "," in data['img_base64'] else data['img_base64']
+        img_data = base64.b64decode(add_padding(base64_str))
         image = Image.open(io.BytesIO(img_data))
     else:
         return jsonify({'error': 'No image provided'}), 400
