@@ -31,4 +31,4 @@ COPY app.py /app.py
 EXPOSE 5000
 
 # Commande pour démarrer l'application Flask
-CMD ["python3", "./app.py"]
+CMD ["python3", "/app.py"]
