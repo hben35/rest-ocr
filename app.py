@@ -3,6 +3,7 @@ import pytesseract
 from PIL import Image
 import io
 import base64
+import requests
 
 app = Flask(__name__)
 
