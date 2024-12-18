@@ -20,6 +20,7 @@ RUN wget -O /mnt/data/tesseract/tessdata/fra.traineddata https://github.com/tess
 
 # Définir la variable d'environnement TESSDATA_PREFIX
 ENV TESSDATA_PREFIX=/mnt/data/tesseract/tessdata/
+RUN ls /mnt/data/tesseract/tessdata/
 
 # Installer Flask et pytesseract
 RUN pip3 install flask pytesseract
@@ -31,4 +32,4 @@ COPY app.py /app.py
 EXPOSE 5000
 
 # Commande pour démarrer l'application Flask
-CMD ["python3", "/app.py"]
+CMD ["python3", "/app.py", "&&", "echo", "App started successfully"]
