@@ -1,5 +1,5 @@
 # Use the official Tesseract OCR image
-FROM jitesoft/tesseract-ocr:4.1.1
+FROM jitesoft/tesseract-ocr:5
 
 # Switch to root user
 USER root
