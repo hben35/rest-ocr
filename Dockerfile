@@ -29,7 +29,7 @@ COPY app.py /app.py
 
 # Exposer le port 5000 pour l'API REST
 EXPOSE 5000
-RUN python3 --version
-RUN tesseract --version
+RUN ls /app.py
+
 # Commande pour démarrer l'application Flask
 #CMD ["python3", "./app.py"]
