@@ -16,6 +16,9 @@ executor = ThreadPoolExecutor(max_workers=4)
 def process_image(image):
     return pytesseract.image_to_string(image)
 
+def add_padding(base64_string):
+    return base64_string + '=' * (-len(base64_string) % 4)
+
 @app.route('/ocr', methods=['POST'])
 def ocr():
     data = request.get_json()
@@ -25,7 +28,7 @@ def ocr():
         img_url = data['img_url']
         image = Image.open(requests.get(img_url, stream=True).raw)
     elif 'img_base64' in data:
-        img_data = base64.b64decode(data['img_base64'])
+        img_data = base64.b64decode(add_padding(data['img_base64']))
         image = Image.open(io.BytesIO(img_data))
     else:
         return jsonify({'error': 'No image provided'}), 400
