@@ -1,27 +1,36 @@
 from flask import Flask, request, jsonify
-from PIL import Image
 import pytesseract
-import requests
-from io import BytesIO
+from PIL import Image
+import io
 import base64
+import os
 
+# Créez une instance Flask
 app = Flask(__name__)
 
-@app.route('/ocr', methods=['POST'])
-def ocr_image():
-    if 'img_url' in request.json:
-        img_url = request.json['img_url']
-        img = Image.open(requests.get(img_url, stream=True).raw)
-    elif 'img_base64' in request.json:
-        img_base64 = request.json['img_base64']
-        img_data = base64.b64decode(img_base64)
-        img = Image.open(BytesIO(img_data))
-    else:
-        return jsonify({"error": "No image provided"}), 400
+# Assurez-vous que Tesseract peut trouver les données de langue
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Chemin vers le binaire de Tesseract
 
-    # OCR processing
-    text = pytesseract.image_to_string(img, lang='fra')  # OCR in French
-    return jsonify({"text": text})
+@app.route('/ocr', methods=['POST'])
+def ocr():
+    # Récupérer l'image depuis la requête
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image provided'}), 400
+    
+    file = request.files['image']
+    
+    if file.filename == '':
+        return jsonify({'error': 'No image selected'}), 400
+
+    try:
+        # Ouvrir l'image
+        img = Image.open(file.stream)
+        # Appliquer l'OCR à l'image
+        text = pytesseract.image_to_string(img)
+        return jsonify({'text': text})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
