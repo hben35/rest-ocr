@@ -1,35 +1,33 @@
-# Utiliser l'image Docker officielle de Tesseract OCR compatible ARM
-FROM jitesoft/tesseract-ocr:latest
+# Use a base image that includes Python and Tesseract
+FROM python:3.9-slim
 
-# Passer à l'utilisateur root pour installer des paquets
+# Switch to root user
 USER root
 
-# Mettre à jour les paquets et installer Python, Flask, et wget
+# Update packages and install dependencies
 RUN apt-get update && apt-get install -y \
-    python3-pip \
-    python3-dev \
+    tesseract-ocr \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Créer le répertoire pour les fichiers de langue Tesseract
+# Create directory for Tesseract language files
 RUN mkdir -p /mnt/data/tesseract/tessdata
 
-# Télécharger les fichiers de langue (anglais et français) depuis un autre serveur
-RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/eng.traineddata
-RUN wget -O /mnt/data/tesseract/tessdata/fra.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/fra.traineddata
+# Download language files
+RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/eng.traineddata && \
+    wget -O /mnt/data/tesseract/tessdata/fra.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/fra.traineddata
 
-# Définir la variable d'environnement TESSDATA_PREFIX
+# Set environment variable
 ENV TESSDATA_PREFIX=/mnt/data/tesseract/tessdata/
-RUN tesseract --version
 
-# Installer Flask et pytesseract
+# Install Flask and pytesseract
 RUN pip3 install flask pytesseract
 
-# Ajouter l'application Flask dans l'image
+# Add Flask application to the image
 COPY app.py /app.py
 
-# Exposer le port 5000 pour l'API REST
+# Expose port 5000 for the REST API
 EXPOSE 5000
 
-# Commande pour démarrer l'application Flask
+# Define the command to run the application
 CMD ["python3", "./app.py"]
