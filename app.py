@@ -4,12 +4,17 @@ from PIL import Image
 import io
 import base64
 import requests
+from concurrent.futures import ThreadPoolExecutor
 
 app = Flask(__name__)
 
 # Configurer le chemin de Tesseract (si nécessaire)
-# pytesseract.pytesseract.tesseract_cmd = "/mnt/data/tesseract/tessdata"  # Assurez-vous que cela est correct dans votre conteneur
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+
+executor = ThreadPoolExecutor(max_workers=4)
+
+def process_image(image):
+    return pytesseract.image_to_string(image)
 
 @app.route('/ocr', methods=['POST'])
 def ocr():
@@ -25,8 +30,9 @@ def ocr():
     else:
         return jsonify({'error': 'No image provided'}), 400
 
-    # Utiliser pytesseract pour effectuer l'OCR
-    text = pytesseract.image_to_string(image)
+    # Utiliser pytesseract pour effectuer l'OCR en parallèle
+    future = executor.submit(process_image, image)
+    text = future.result()
 
     return jsonify({'text': text})
 
