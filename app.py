@@ -19,6 +19,15 @@ def process_image(image):
 def add_padding(base64_string):
     return base64_string + '=' * (-len(base64_string) % 4)
 
+@app.route('/key_value')
+def key_value():
+    data = {
+        "key1": "value1",
+        "key2": "value2",
+        "key3": "value3"
+    }
+    return jsonify(data)
+    
 @app.route('/ocr', methods=['POST'])
 def ocr():
     data = request.get_json()
