@@ -27,6 +27,12 @@ COPY app.py /app.py
 
 # Expose port 5000 for the REST API
 EXPOSE 5000
-RUN tesseract --version
+
+# Set environment variables
+ENV TESSDATA_PREFIX=/mnt/data/tesseract/tessdata/
+ENV TESSERACT_DATA_LANGS=fra
+ENV TESSERACT_OCR_ENGINE_MODE=1
+ENV TESSERACT_PAGE_SEG_MODE=3
+
 # Define the command to run the application
 CMD ["python3", "./app.py"]
