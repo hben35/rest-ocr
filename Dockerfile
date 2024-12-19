@@ -14,8 +14,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /mnt/data/tesseract/tessdata
 
 # Download language files
-RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/eng.traineddata && \
-    wget -O /mnt/data/tesseract/tessdata/fra.traineddata https://github.com/tesseract-ocr/tessdata/raw/refs/heads/main/fra.traineddata
+RUN wget -O /mnt/data/tesseract/tessdata/eng.traineddata https://github.com/tesseract-ocr/tessdata_fast/raw/refs/heads/main/fra.traineddata
 
 # Set environment variable
 ENV TESSDATA_PREFIX=/mnt/data/tesseract/tessdata/
