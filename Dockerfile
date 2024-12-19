@@ -27,6 +27,6 @@ COPY app.py /app.py
 
 # Expose port 5000 for the REST API
 EXPOSE 5000
-
+RUN tesseract --version
 # Define the command to run the application
 CMD ["python3", "./app.py"]
